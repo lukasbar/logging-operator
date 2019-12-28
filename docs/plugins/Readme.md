@@ -26,6 +26,7 @@
 - [gcs](./outputs/gcs.md)
 - [kafka](./outputs/kafka.md)
 - [kinesis_stream](./outputs/kinesis_stream.md)
+- [logdna](./outputs/logdna.md)
 - [loki](./outputs/loki.md)
 - [oss](./outputs/oss.md)
 - [s3](./outputs/s3.md)
