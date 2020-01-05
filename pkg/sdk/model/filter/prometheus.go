@@ -19,29 +19,14 @@ import (
 	"github.com/banzaicloud/logging-operator/pkg/sdk/model/types"
 )
 
-// +docName:"Fluentd prometheus filter"
+// +kubebuilder:object:generate=true
+// +docName:"[Prometheus Filter](https://github.com/fluent/fluent-plugin-prometheus#prometheus-outputfilter-plugin)"
 // Prometheus Filter Plugin to count Incoming Records
-// More information at https://github.com/fluent/fluent-plugin-prometheus#prometheus-outputfilter-plugin
-//
-// #### Example record configurations
-// ```
-// spec:
-//  filters:
-//    - prometheus:
-//        metrics:
-//        - type: counter
-//          name: message_foo_counter
-//          desc: "The total number of foo in message."
-//          key: foo
-//          labels:
-//            foo: $.kubernetes.namespace
-//            env: dev
-// ```
 type _docPrometheus interface{}
 
 // +kubebuilder:object:generate=true
 type PrometheusConfig struct {
-	// +docLink:"Metrics Section"
+	// +docLink:"Metrics Section,#Metrics-Section"
 	Metrics []MetricSection `json:"metrics,omitempty"`
 }
 
@@ -61,6 +46,45 @@ type MetricSection struct {
 	//Additional labels for this metric
 	Labels Label `json:"labels,omitempty"`
 }
+
+// #### Example `Regexp` filter configurations
+// ```
+//apiVersion: logging.banzaicloud.io/v1beta1
+//kind: Flow
+//metadata:
+//  name: demo-flow
+//spec:
+//  filters:
+//    - prometheus:
+//        metrics:
+//        - type: counter
+//          name: message_foo_counter
+//          desc: "The total number of foo in message."
+//          key: foo
+//          labels:
+//            foo: bar
+//  selectors: {}
+//  outputRefs:
+//    - demo-output
+// ```
+//
+// #### Fluentd Config Result
+// ```
+//<filter **>
+//  @type prometheus
+//  @id test_prometheus
+//  <metric>
+//    desc The total number of foo in message.
+//    key foo
+//    name message_foo_counter
+//    type counter
+//    <label>
+//      foo bar
+//    </label>
+//  </metric>
+//</filter>
+// ```
+type _expPrometheus interface{}
 
 type Label map[string]string
 

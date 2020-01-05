@@ -9,6 +9,7 @@
 - [geoip](./filters/geoip.md)
 - [grep](./filters/grep.md)
 - [parser](./filters/parser.md)
+- [prometheus](./filters/prometheus.md)
 - [record_transformer](./filters/record_transformer.md)
 - [stdout](./filters/stdout.md)
 - [tagnormaliser](./filters/tagnormaliser.md)
