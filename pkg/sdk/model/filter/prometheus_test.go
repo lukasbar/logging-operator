@@ -41,6 +41,9 @@ metric:
     key foo
     name message_foo_counter
     type counter
+    <label>
+      foo bar
+    </label>
   </metric>
 </filter>
 `

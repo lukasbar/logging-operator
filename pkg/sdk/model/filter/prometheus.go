@@ -74,27 +74,29 @@ func (r Label) ToDirective(secretLoader secret.SecretLoader, id string) (types.D
 	return directive, nil
 }
 
-func (r Label) merge(input Label) {
-	for k, v := range input {
-		r[k] = v
-	}
-}
-
 func (m *MetricSection) ToDirective(secretLoader secret.SecretLoader, id string) (types.Directive, error) {
-	meta := types.PluginMeta{
-		Directive: "metric",
+	metricSection := &types.GenericDirective{
+		PluginMeta: types.PluginMeta{
+			Directive: "metric",
+		},
 	}
 	metric := m.DeepCopy()
-
-	if m.Labels == nil {
-		m.Labels = Label{}
+	// Render Labels as subdirective
+	if metric.Labels != nil {
+		if format, err := metric.Labels.ToDirective(secretLoader, ""); err != nil {
+			return nil, err
+		} else {
+			metricSection.SubDirectives = append(metricSection.SubDirectives, format)
+		}
 	}
-	m.Labels.merge(Label{
-		"tag":  `$.kubernetes.tag`,
-		"host": `$.kubernetes.host`,
-	})
-
-	return types.NewFlatDirective(meta, metric, secretLoader)
+	// Remove Labels from parameter rendering
+	metric.Labels = nil
+	if params, err := types.NewStructToStringMapper(secretLoader).StringsMap(metric); err != nil {
+		return nil, err
+	} else {
+		metricSection.Params = params
+	}
+	return metricSection, nil
 }
 
 func (p *PrometheusConfig) ToDirective(secretLoader secret.SecretLoader, id string) (types.Directive, error) {
@@ -109,17 +111,19 @@ func (p *PrometheusConfig) ToDirective(secretLoader secret.SecretLoader, id stri
 	}
 
 	prometheusConfig := p.DeepCopy()
-	if params, err := types.NewStructToStringMapper(secretLoader).StringsMap(prometheusConfig); err != nil {
-		return nil, err
-	} else {
-		prometheus.Params = params
-	}
+
 	if p.Metric != nil {
 		if format, err := p.Metric.ToDirective(secretLoader, ""); err != nil {
 			return nil, err
 		} else {
 			prometheus.SubDirectives = append(prometheus.SubDirectives, format)
 		}
+	}
+
+	if params, err := types.NewStructToStringMapper(secretLoader).StringsMap(prometheusConfig); err != nil {
+		return nil, err
+	} else {
+		prometheus.Params = params
 	}
 
 	return prometheus, nil
