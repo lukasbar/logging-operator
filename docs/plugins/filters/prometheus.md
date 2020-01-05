@@ -11,7 +11,7 @@
 | Variable Name | Type | Required | Default | Description |
 |---|---|---|---|---|
 | name | string | Yes | - | Metrics name<br> |
-| type | string | Yes | - | Metrics type [counter](https://github.com/fluent/fluent-plugin-prometheus#counter-type),[gauge](https://github.com/fluent/fluent-plugin-prometheus#gauge-type),[summary](https://github.com/fluent/fluent-plugin-prometheus#summary-type),[histogram](https://github.com/fluent/fluent-plugin-prometheus#histogram-type)<br> |
+| type | string | Yes | - | Metrics type [counter](https://github.com/fluent/fluent-plugin-prometheus#counter-type), [gauge](https://github.com/fluent/fluent-plugin-prometheus#gauge-type), [summary](https://github.com/fluent/fluent-plugin-prometheus#summary-type), [histogram](https://github.com/fluent/fluent-plugin-prometheus#histogram-type)<br> |
 | desc | string | Yes | - | Description of metric<br> |
 | key | string | Yes | - | Key name of record for instrumentation.<br> |
 | buckets | string | No | - | Buckets of record for instrumentation<br> |
