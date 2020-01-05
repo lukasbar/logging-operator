@@ -35,7 +35,7 @@ type PrometheusConfig struct {
 type MetricSection struct {
 	// Metrics name
 	Name string `json:"name"`
-	//Metrics type
+	//Metrics type [counter](https://github.com/fluent/fluent-plugin-prometheus#counter-type),[gauge](https://github.com/fluent/fluent-plugin-prometheus#gauge-type),[summary](https://github.com/fluent/fluent-plugin-prometheus#summary-type),[histogram](https://github.com/fluent/fluent-plugin-prometheus#histogram-type)
 	Type string `json:"type"`
 	//Description of metric
 	Desc string `json:"desc"`
