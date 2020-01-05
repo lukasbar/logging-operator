@@ -471,7 +471,10 @@ spec:
                               description: Metrics name
                               type: string
                             type:
-                              description: Metrics type
+                              description: Metrics type [counter](https://github.com/fluent/fluent-plugin-prometheus#counter-type),
+                                [gauge](https://github.com/fluent/fluent-plugin-prometheus#gauge-type),
+                                [summary](https://github.com/fluent/fluent-plugin-prometheus#summary-type),
+                                [histogram](https://github.com/fluent/fluent-plugin-prometheus#histogram-type)
                               type: string
                           required:
                           - desc
