@@ -24,8 +24,8 @@ import (
 
 func TestPrometheus(t *testing.T) {
 	CONFIG := []byte(`
-metric:
-  type: counter
+metrics:
+- type: counter
   name: message_foo_counter
   desc: "The total number of foo in message."
   key: foo

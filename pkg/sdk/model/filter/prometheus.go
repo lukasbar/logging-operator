@@ -28,28 +28,29 @@ import (
 // spec:
 //  filters:
 //    - prometheus:
-//        metric:
-//          type: counter
+//        metrics:
+//        - type: counter
 //          name: message_foo_counter
 //          desc: "The total number of foo in message."
 //          key: foo
 //          labels:
-//            foo: bar
+//            foo: $.kubernetes.namespace
+//            env: dev
 // ```
 type _docPrometheus interface{}
 
 // +kubebuilder:object:generate=true
 type PrometheusConfig struct {
-	// +docLink:"Metrics Section,#Parse-Section"
-	Metric *MetricSection `json:"metric,omitempty"`
+	// +docLink:"Metrics Section"
+	Metrics []MetricSection `json:"metrics,omitempty"`
 }
 
 // +kubebuilder:object:generate=true
-// +docName:"Metric Section"
+// +docName:"Metrics Section"
 type MetricSection struct {
-	// Metric name
+	// Metrics name
 	Name string `json:"name"`
-	//Metric type
+	//Metrics type
 	Type string `json:"type"`
 	//Description of metric
 	Desc string `json:"desc"`
@@ -112,11 +113,13 @@ func (p *PrometheusConfig) ToDirective(secretLoader secret.SecretLoader, id stri
 
 	prometheusConfig := p.DeepCopy()
 
-	if p.Metric != nil {
-		if format, err := p.Metric.ToDirective(secretLoader, ""); err != nil {
-			return nil, err
-		} else {
-			prometheus.SubDirectives = append(prometheus.SubDirectives, format)
+	if len(p.Metrics) > 0 {
+		for _, metrics := range p.Metrics {
+			if meta, err := metrics.ToDirective(secretLoader, ""); err != nil {
+				return nil, err
+			} else {
+				prometheus.SubDirectives = append(prometheus.SubDirectives, meta)
+			}
 		}
 	}
 
