@@ -65,9 +65,9 @@ type ElasticsearchOutput struct {
 	Path string `json:"path,omitempty"`
 	// Connection scheme (default: http)
 	Scheme string `json:"scheme,omitempty"`
-	// Skip ssl verification (default: true)
 	// +kubebuilder:validation:Optional
-	SslVerify bool `json:"ssl_verify" plugin:"default:true"`
+	// Skip ssl verification (default: true)
+	SslVerify bool `json:"ssl_verify,omitempty" plugin:"default:true"`
 	// If you want to configure SSL/TLS version, you can specify ssl_version parameter. [SSLv23, TLSv1, TLSv1_1, TLSv1_2]
 	SslVersion string `json:"ssl_version,omitempty"`
 	// Enable Logstash log format.(default: false)
@@ -92,7 +92,7 @@ type ElasticsearchOutput struct {
 	TimeKey string `json:"time_key,omitempty"`
 	// By default, the records inserted into index logstash-YYMMDD with UTC (Coordinated Universal Time). This option allows to use local time if you describe utc_index to false.(default: true)
 	// +kubebuilder:validation:Optional
-	UtcIndex bool `json:"utc_index" plugin:"default:true"`
+	UtcIndex bool `json:"utc_index,omitempty" plugin:"default:true"`
 	// Tell this plugin to find the index name to write to in the record under this key in preference to other mechanisms. Key can be specified as path to nested record using dot ('.') as a separator. https://github.com/uken/fluent-plugin-elasticsearch#target_index_key
 	TargetIndexKey string `json:"target_index_key,omitempty"`
 	// Similar to target_index_key config, find the type name to write to in the record under this key (or nested record). If key not found in record - fallback to type_name.(default: fluentd)
@@ -121,14 +121,14 @@ type ElasticsearchOutput struct {
 	MaxRetryPuttingTemplate string `json:"max_retry_putting_template,omitempty"`
 	// Indicates whether to fail when max_retry_putting_template is exceeded. If you have multiple output plugin, you could use this property to do not fail on fluentd statup.(default: true)
 	// +kubebuilder:validation:Optional
-	FailOnPuttingTemplateRetryExceed bool `json:"fail_on_putting_template_retry_exceed" plugin:"default:true"`
+	FailOnPuttingTemplateRetryExceed bool `json:"fail_on_putting_template_retry_exceed,omitempty,omitempty" plugin:"default:true"`
 	// You can specify times of retry obtaining Elasticsearch version.(default: 15)
 	MaxRetryGetEsVersion string `json:"max_retry_get_es_version,omitempty"`
 	// You can specify HTTP request timeout.(default: 5s)
 	RequestTimeout string `json:"request_timeout,omitempty"`
 	// You can tune how the elasticsearch-transport host reloading feature works.(default: true)
 	// +kubebuilder:validation:Optional
-	ReloadConnections bool `json:"reload_connections" plugin:"default:true"`
+	ReloadConnections bool `json:"reload_connections,omitempty"`
 	//Indicates that the elasticsearch-transport will try to reload the nodes addresses if there is a failure while making the request, this can be useful to quickly remove a dead node from the list of addresses.(default: false)
 	ReloadOnFailure bool `json:"reload_on_failure,omitempty"`
 	// You can set in the elasticsearch-transport how often dead connections from the elasticsearch-transport's pool will be resurrected.(default: 60s)
@@ -180,7 +180,7 @@ type ElasticsearchOutput struct {
 	// If you want to disable to verify Elasticsearch version at start up, set it as false.
 	// When using the following configuration, ES plugin intends to communicate into Elasticsearch 6. (default: true)
 	// +kubebuilder:validation:Optional
-	VerifyEsVersionAtStartup bool `json:"verify_es_version_at_startup" plugin:"default:true"`
+	VerifyEsVersionAtStartup bool `json:"verify_es_version_at_startup,omitempty" plugin:"default:true"`
 	// This parameter changes that ES plugin assumes default Elasticsearch version.(default: 5)
 	DefaultElasticsearchVersion string `json:"default_elasticsearch_version,omitempty"`
 	// This parameter adds additional headers to request. Example: {"token":"secret"} (default: {})
@@ -195,7 +195,7 @@ type ElasticsearchOutput struct {
 	IgnoreExceptions string `json:"ignore_exceptions,omitempty"`
 	// Indicates whether to backup chunk when ignore exception occurs. (default: true)
 	// +kubebuilder:validation:Optional
-	ExceptionBackup bool `json:"exception_backup" plugin:"default:true"`
+	ExceptionBackup bool `json:"exception_backup,omitempty" plugin:"default:true"`
 	// Configure bulk_message request splitting threshold size.
 	// Default value is 20MB. (20 * 1024 * 1024)
 	// If you specify this size as negative number, bulk_message request splitting feature will be disabled. (default: 20MB)
